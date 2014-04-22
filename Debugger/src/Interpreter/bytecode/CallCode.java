@@ -1,0 +1,51 @@
+package Interpreter.ByteCode;
+
+import Interpreter.VirtualMachine;
+import java.util.*;
+
+public class CallCode extends ByteCode{
+    private String label;
+    private Integer targetAddr;
+    private Vector argValues;
+    
+    public void execute(VirtualMachine vm) {
+        vm.changeAddr(targetAddr);
+        argValues = vm.getArgs();
+    }
+
+    public void init(Vector<String> args) {
+        label = args.get(0);
+    }
+    
+    public String getLabel(){
+        return label;
+    }
+    
+    public void setAddr(Integer addr){
+        targetAddr = addr;
+    }
+    
+    @Override
+    public String toString() {
+        String returnLabel;
+        String returnStr;
+        int index = label.indexOf('<');
+        if (index != -1)
+            returnLabel = label.substring(0, index);
+        else
+            returnLabel = label;
+        
+        returnStr = "CALL " + label + "   " + returnLabel + "(";
+        int i = 0;
+        if (!argValues.isEmpty())
+            returnStr += argValues.get(i);
+        
+        ++i;
+        for (; i < argValues.size(); ++i) {
+            returnStr += "," + argValues.get(i);
+        }
+        
+        returnStr += ")";
+        return returnStr;
+    }
+}

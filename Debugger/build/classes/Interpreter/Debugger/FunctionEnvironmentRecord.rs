@@ -1,0 +1,3 @@
+Interpreter.Debugger.Binder
+Interpreter.Debugger.FunctionEnvironmentRecord
+Interpreter.Debugger.Table
