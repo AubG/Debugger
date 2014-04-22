@@ -1,1 +1,0 @@
-Interpreter.ByteCode.PopCode
