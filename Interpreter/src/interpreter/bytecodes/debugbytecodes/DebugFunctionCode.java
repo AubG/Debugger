@@ -22,6 +22,36 @@ public class DebugFunctionCode extends ByteCode {
     public void execute(VirtualMachine vm) {
         DebugVirtualMachine dvm = (DebugVirtualMachine) vm;
         dvm.setFunc(name, getStart(), getEnd());
+        if (dvm.getIsTraceOn()) {
+            String function = "";
+            String dontTrace = name.toLowerCase();
+            
+            //So we dont Print Main, read or write funcs
+            if(dontTrace.equals("main") || dontTrace.equals("read") || dontTrace.equals("write")){
+                return;
+            }
+            
+            for (int i = 0; i < dvm.getFERStackSize(); i++) {
+                function += "   ";
+            }
+            
+            int temp = name.indexOf("<");
+
+            if (temp < 0) {
+                function += name + "( ";
+            } else {
+                function += name.substring(0, temp) + "(";
+            }
+            
+            int pc = dvm.getPC() + 1;
+            ByteCode code = dvm.getCode(pc);
+
+            while (code instanceof DebugFormalCode) {
+                function += dvm.getValue(dvm.getRunStackSize() - Integer.parseInt(((DebugFormalCode) code).getOffset())) + " ";
+                code = dvm.getCode(++pc);
+            }
+            dvm.addTrace(function + ")");
+        }
     }
 
     @Override

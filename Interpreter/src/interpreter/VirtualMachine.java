@@ -7,6 +7,9 @@ package interpreter;
 
 import java.util.*;
 import interpreter.bytecodes.*;
+import interpreter.bytecodes.debugbytecodes.DebugFormalCode;
+import interpreter.bytecodes.debugbytecodes.DebugFunctionCode;
+import interpreter.bytecodes.debugbytecodes.DebugLineCode;
 
 /**
  *
@@ -33,7 +36,9 @@ public class VirtualMachine {
         isDumping = false;
         while (isRunning) {
             ByteCode code = program.getCode(pc);
-            code.execute(this);
+            if(!(code instanceof DebugLineCode) || !(code instanceof DebugFunctionCode) || !(code instanceof DebugFormalCode)){
+                code.execute(this);
+            }
             if (!(code instanceof DumpCode)) {
                 if (isDumping) {
                     System.out.println(code.toString());

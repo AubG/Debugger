@@ -6,6 +6,9 @@
 package interpreter;
 
 import interpreter.bytecodes.ByteCode;
+import interpreter.bytecodes.debugbytecodes.DebugFormalCode;
+import interpreter.bytecodes.debugbytecodes.DebugFunctionCode;
+import interpreter.bytecodes.debugbytecodes.DebugLineCode;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -38,7 +41,7 @@ public class ByteCodeLoader {
             Scanner tokenizer = new Scanner(codeLine);
             String code = tokenizer.next();
             String codeClass = CodeTable.get(code);
-            
+
             //Checking for Debug Byte Codes
             if (codeClass.startsWith("Debug")) {
                 byteCode = (ByteCode) (Class.forName("interpreter.bytecodes.debugbytecodes." + codeClass).newInstance());
@@ -51,6 +54,7 @@ public class ByteCodeLoader {
             }
 
             byteCode.init(byteCodeInstance);
+
             prog.addByteCode(byteCode);
 
             if (codeClass.equals("LabelCode")) {

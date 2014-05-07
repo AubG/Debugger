@@ -44,7 +44,13 @@ public class Debugger {
         dvm.loadSource(sourceFile);
         ui = new DebugUI(dvm);
         do {
-            ui.dumpSource();
+            
+            if(!dvm.getIsIntrinsic()){
+                ui.dumpSource();
+            } else {
+                dvm.setIntrinsic(false);
+            }
+            
             ui.userCommand();
         } while (dvm.getIsRunning());
     }
